@@ -273,24 +273,6 @@ All responses follow consistent structure:
 
 ## Performance Optimization
 
-### Caching Strategy
-
-**Redis Cache Layers:**
-
-1. **API Response Cache** (TTL: 5 min)
-   - Leaderboard queries
-   - Model listings
-   - Test search results
-
-2. **Computation Cache** (TTL: 15 min)
-   - Aggregated statistics
-   - Performance metrics
-   - Comparison results
-
-3. **Session Cache** (TTL: 1 hour)
-   - User sessions
-   - Rate limit counters
-
 ### Concurrency Management
 
 **Execution Limits:**
