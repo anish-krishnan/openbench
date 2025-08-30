@@ -5,7 +5,7 @@ from datetime import datetime
 from typing import Dict, Any, Optional
 from uuid import uuid4
 
-from sqlalchemy import Boolean, DateTime, String, Integer, Numeric
+from sqlalchemy import Boolean, DateTime, String, Integer, Numeric, ForeignKey
 from sqlalchemy.dialects.postgresql import UUID, JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.sql import func
@@ -27,7 +27,11 @@ class TestResult(Base):
     )
     
     # Foreign keys
-    test_case_id: Mapped[str] = mapped_column(UUID(as_uuid=False), index=True)
+    test_case_id: Mapped[str] = mapped_column(
+        UUID(as_uuid=False), 
+        ForeignKey("test_cases.id"), 
+        index=True
+    )
     model_id: Mapped[str] = mapped_column(UUID(as_uuid=False), index=True)
     execution_id: Mapped[str] = mapped_column(UUID(as_uuid=False), index=True)
     

@@ -70,41 +70,59 @@ export interface ModelPerformance {
 export interface TestCase {
   id: string
   title: string
-  description: string
+  description: string | null
   category: string
   tags: string[]
   difficulty: 'easy' | 'medium' | 'hard'
-  prompt_template: string
-  input_schema?: any
-  expected_output_schema?: any
-  expected_output: any
+  prompt: string
+  system_prompt?: string | null
+  expected_output: Record<string, any>
+  output_schema?: Record<string, any> | null
   evaluation_type: 'exact_match' | 'structured_match' | 'llm_judge'
-  evaluation_config?: any
-  status: 'pending' | 'approved' | 'rejected'
-  visibility: 'public' | 'private'
+  evaluation_config?: any | null
+  timeout_seconds: number
+  language: string
   created_by: string
+  is_public: boolean
+  is_approved: boolean
+  approved_by?: string | null
+  approved_at?: string | null
+  total_runs: number
+  avg_accuracy?: number | null
   created_at: string
   updated_at: string
-  version: number
-  is_parameterized: boolean
-  max_test_cases?: number
 }
 
 export interface TestCaseCreate {
+  title: string
+  description?: string
+  category: string
+  tags?: string[]
+  difficulty?: 'easy' | 'medium' | 'hard'
+  prompt: string
+  system_prompt?: string
+  expected_output: Record<string, any>
+  output_schema?: Record<string, any>
+  evaluation_type?: 'exact_match' | 'structured_match' | 'llm_judge'
+  evaluation_config?: any
+  timeout_seconds?: number
+  language?: string
+  is_public?: boolean
+}
+
+// Frontend-specific interface for the form
+export interface TestCaseFormData {
   title: string
   description: string
   category: string
   tags: string[]
   difficulty: 'easy' | 'medium' | 'hard'
   prompt_template: string
-  input_schema?: any
-  expected_output_schema?: any
   expected_output: any
   evaluation_type: 'exact_match' | 'structured_match' | 'llm_judge'
   evaluation_config?: any
   visibility: 'public' | 'private'
   is_parameterized: boolean
-  max_test_cases?: number
 }
 
 export interface TestResult {

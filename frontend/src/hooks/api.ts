@@ -243,6 +243,19 @@ export const useCreateTest = () => {
   })
 }
 
+export const useUpdateTest = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: ({ id, updates }: { id: string; updates: Partial<TestCaseCreate> }) =>
+      testsApi.update(id, updates),
+    onSuccess: (data, variables) => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.tests.detail(variables.id) })
+      queryClient.invalidateQueries({ queryKey: queryKeys.tests.lists() })
+    },
+  })
+}
+
 export const useRunTest = () => {
   const queryClient = useQueryClient()
 

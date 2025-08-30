@@ -73,7 +73,7 @@ export function TestDetailPage({ testId }: TestDetailPageProps) {
     category: 'Mathematics',
     tags: ['reasoning', 'math', 'word-problems', 'algebra', 'geometry'],
     difficulty: 'medium' as const,
-    prompt_template: 'Solve the following mathematical problem step by step: {problem}\n\nPlease provide:\n1. Your solution\n2. Step-by-step reasoning\n3. Final answer',
+    prompt: 'Solve the following mathematical problem step by step: {problem}\n\nPlease provide:\n1. Your solution\n2. Step-by-step reasoning\n3. Final answer',
     input_schema: {
       type: 'object',
       properties: {
@@ -178,9 +178,11 @@ export function TestDetailPage({ testId }: TestDetailPageProps) {
               <Flag className="mr-2 h-4 w-4" />
               Report
             </Button>
-            <Button variant="outline" size="sm">
-              <Edit className="mr-2 h-4 w-4" />
-              Edit
+            <Button variant="outline" size="sm" asChild>
+              <Link href={`/tests/${testId}/edit`}>
+                <Edit className="mr-2 h-4 w-4" />
+                Edit
+              </Link>
             </Button>
             <Button 
               size="sm"
@@ -255,7 +257,7 @@ export function TestDetailPage({ testId }: TestDetailPageProps) {
                 </CardHeader>
                 <CardContent>
                   <pre className="text-sm bg-muted p-4 rounded-lg overflow-x-auto whitespace-pre-wrap">
-                    {displayTest.prompt_template}
+                    {displayTest.prompt}
                   </pre>
                 </CardContent>
               </Card>

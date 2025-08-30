@@ -82,7 +82,7 @@ export function PendingTestsPage() {
       category: 'Mathematics',
       tags: ['advanced-math', 'calculus', 'statistics', 'reasoning'],
       difficulty: 'hard',
-      prompt_template: 'Solve the following advanced mathematical problem: {problem}',
+      prompt: 'Solve the following advanced mathematical problem: {problem}',
       expected_output: { solution: 'string', steps: 'array', confidence: 'number' },
       evaluation_type: 'structured_match',
       status: 'pending',
@@ -103,7 +103,7 @@ export function PendingTestsPage() {
       category: 'Language',
       tags: ['creative-writing', 'storytelling', 'narrative', 'fiction'],
       difficulty: 'medium',
-      prompt_template: 'Write a {genre} story about {theme} with {constraint}.',
+      prompt: 'Write a {genre} story about {theme} with {constraint}.',
       expected_output: { story: 'string', word_count: 'number', genre: 'string' },
       evaluation_type: 'llm_judge',
       status: 'pending',
@@ -123,7 +123,7 @@ export function PendingTestsPage() {
       category: 'Programming',
       tags: ['code-review', 'debugging', 'security', 'quality'],
       difficulty: 'hard',
-      prompt_template: 'Review the following code and identify any issues: {code}',
+      prompt: 'Review the following code and identify any issues: {code}',
       expected_output: { issues: 'array', severity: 'string', recommendations: 'array' },
       evaluation_type: 'structured_match',
       status: 'pending',
@@ -402,7 +402,7 @@ export function PendingTestsPage() {
                                   <div>
                                     <Label>Prompt Template</Label>
                                     <pre className="text-sm bg-muted p-3 rounded-lg mt-1 overflow-x-auto">
-                                      {selectedTest.prompt_template}
+                                      {selectedTest.prompt}
                                     </pre>
                                   </div>
                                   

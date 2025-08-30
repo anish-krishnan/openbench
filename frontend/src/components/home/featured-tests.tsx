@@ -81,7 +81,15 @@ export function FeaturedTests() {
       difficulty: 'medium' as const,
       created_by: 'alice_researcher',
       created_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-      status: 'approved' as const,
+      is_approved: true,
+      is_public: true,
+      prompt: 'Sample prompt',
+      expected_output: {},
+      evaluation_type: 'exact_match' as const,
+      timeout_seconds: 30,
+      language: 'en',
+      total_runs: 0,
+      updated_at: new Date().toISOString(),
     },
     {
       id: '2',
@@ -92,7 +100,15 @@ export function FeaturedTests() {
       difficulty: 'hard' as const,
       created_by: 'dev_master',
       created_at: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
-      status: 'approved' as const,
+      is_approved: true,
+      is_public: true,
+      prompt: 'Sample prompt',
+      expected_output: {},
+      evaluation_type: 'exact_match' as const,
+      timeout_seconds: 30,
+      language: 'en',
+      total_runs: 0,
+      updated_at: new Date().toISOString(),
     },
     {
       id: '3',
@@ -103,7 +119,15 @@ export function FeaturedTests() {
       difficulty: 'easy' as const,
       created_by: 'writer_ai',
       created_at: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
-      status: 'approved' as const,
+      is_approved: true,
+      is_public: true,
+      prompt: 'Sample prompt',
+      expected_output: {},
+      evaluation_type: 'exact_match' as const,
+      timeout_seconds: 30,
+      language: 'en',
+      total_runs: 0,
+      updated_at: new Date().toISOString(),
     }
   ]
 
@@ -148,7 +172,7 @@ export function FeaturedTests() {
                     {test.description}
                   </CardDescription>
                 </div>
-                <StatusPill status={test.status} />
+                <StatusPill status={test.is_approved ? 'approved' : 'pending'} />
               </div>
             </CardHeader>
             <CardContent>

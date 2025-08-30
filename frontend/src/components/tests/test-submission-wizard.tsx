@@ -36,7 +36,7 @@ import {
   Info
 } from 'lucide-react'
 import { toast } from 'sonner'
-import type { TestCaseCreate } from '@/types/api'
+import type { TestCaseCreate, TestCaseFormData } from '@/types/api'
 
 const steps = [
   { id: 'basics', title: 'Basics', icon: FileText },
@@ -45,9 +45,21 @@ const steps = [
   { id: 'review', title: 'Review', icon: CheckCircle }
 ]
 
-export function TestSubmissionWizard() {
+interface TestSubmissionWizardProps {
+  initialData?: Partial<TestCaseFormData>
+  onSubmit?: (formData: Partial<TestCaseFormData>) => Promise<void>
+  submitButtonText?: string
+  isEdit?: boolean
+}
+
+export function TestSubmissionWizard({ 
+  initialData, 
+  onSubmit, 
+  submitButtonText = 'Submit Test',
+  isEdit = false 
+}: TestSubmissionWizardProps = {}) {
   const [currentStep, setCurrentStep] = useState(0)
-  const [formData, setFormData] = useState<Partial<TestCaseCreate>>({
+  const [formData, setFormData] = useState<Partial<TestCaseFormData>>(initialData || {
     title: '',
     description: '',
     category: '',
@@ -103,7 +115,7 @@ export function TestSubmissionWizard() {
     )
   }
 
-  const updateFormData = (updates: Partial<TestCaseCreate>) => {
+  const updateFormData = (updates: Partial<TestCaseFormData>) => {
     setFormData(prev => ({ ...prev, ...updates }))
   }
 
@@ -120,23 +132,36 @@ export function TestSubmissionWizard() {
   }
 
   const handleSubmit = async () => {
+    // If custom onSubmit is provided, use it (for editing)
+    if (onSubmit) {
+      await onSubmit(formData)
+      return
+    }
+
+    // Default submission logic for creating new tests
     try {
-      // Prepare the data for submission
-      const submissionData = {
-        ...formData,
-        prompt: formData.prompt_template, // Map prompt_template to prompt
+      // Transform form data to match backend schema
+      const submissionData: TestCaseCreate = {
+        title: formData.title!,
+        description: formData.description,
+        category: formData.category!,
+        tags: formData.tags || [],
+        difficulty: formData.difficulty || 'medium',
+        prompt: formData.prompt_template!,
         // Ensure expected_output is always an object
         expected_output: typeof formData.expected_output === 'string' 
           ? { answer: formData.expected_output }
-          : formData.expected_output || { answer: '' }
+          : formData.expected_output || { answer: '' },
+        evaluation_type: formData.evaluation_type || 'exact_match',
+        evaluation_config: formData.evaluation_config,
+        is_public: formData.visibility === 'public',
+        language: 'en',
+        timeout_seconds: 30
       }
-      
-      // Remove frontend-specific fields
-      delete (submissionData as any).prompt_template
       
       console.log('Submitting test data:', submissionData)
       
-      const result = await createTestMutation.mutateAsync(submissionData as TestCaseCreate)
+      const result = await createTestMutation.mutateAsync(submissionData)
       toast.success('Test submitted successfully! It will be reviewed before being published.')
       router.push(`/tests/${result.data.id}`)
     } catch (error: any) {
@@ -550,7 +575,7 @@ export function TestSubmissionWizard() {
               disabled={createTestMutation.isPending || !isStepValid(currentStep)}
             >
               <Send className="mr-2 h-4 w-4" />
-              {createTestMutation.isPending ? 'Submitting...' : 'Submit Test'}
+              {createTestMutation.isPending ? (isEdit ? 'Updating...' : 'Submitting...') : submitButtonText}
             </Button>
           )}
         </div>

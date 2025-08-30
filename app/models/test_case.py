@@ -7,8 +7,12 @@ from uuid import uuid4
 
 from sqlalchemy import Boolean, DateTime, String, Text, Integer
 from sqlalchemy.dialects.postgresql import UUID, JSONB
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql import func
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from .test_result import TestResult
 
 from app.core.database import Base
 
@@ -68,6 +72,14 @@ class TestCase(Base):
         DateTime(timezone=True),
         server_default=func.now(),
         onupdate=func.now()
+    )
+    
+    # Relationships
+    results: Mapped[list["TestResult"]] = relationship(
+        "TestResult",
+        foreign_keys="TestResult.test_case_id",
+        primaryjoin="TestCase.id == TestResult.test_case_id",
+        back_populates=None
     )
     
     def __repr__(self) -> str:

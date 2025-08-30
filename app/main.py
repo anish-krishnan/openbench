@@ -7,9 +7,10 @@ from typing import AsyncGenerator
 
 import sentry_sdk
 import structlog
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from fastapi.exceptions import RequestValidationError
 from sentry_sdk.integrations.fastapi import FastApiIntegration
 from sentry_sdk.integrations.sqlalchemy import SqlalchemyIntegration
 
@@ -79,7 +80,7 @@ def create_app() -> FastAPI:
     # Include API router
     app.include_router(api_router, prefix=f"/api/{settings.api_version}")
     
-    # Global exception handler
+    # Global exception handlers
     @app.exception_handler(OpenBenchException)
     async def openbench_exception_handler(request: Request, exc: OpenBenchException):
         return JSONResponse(
@@ -91,6 +92,15 @@ def create_app() -> FastAPI:
                     "details": exc.details,
                     "request_id": getattr(request.state, "request_id", None),
                 }
+            },
+        )
+    
+    @app.exception_handler(RequestValidationError)
+    async def validation_exception_handler(request: Request, exc: RequestValidationError):
+        return JSONResponse(
+            status_code=422,
+            content={
+                "detail": exc.errors()
             },
         )
     

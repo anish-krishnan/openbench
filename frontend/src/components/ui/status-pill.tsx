@@ -79,7 +79,7 @@ const statusConfig = {
 }
 
 export function StatusPill({ status, className, showIcon = true }: StatusPillProps) {
-  const config = statusConfig[status]
+  const config = statusConfig[status] || statusConfig.pending // Fallback to pending for unknown statuses
   const Icon = config.icon
 
   return (

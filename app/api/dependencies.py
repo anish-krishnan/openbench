@@ -34,7 +34,7 @@ async def get_current_user(
         # TODO: Implement JWT token validation with Supabase
         # For now, return a mock user for development
         user_data = {
-            "id": "user-123",
+            "id": "123e4567-e89b-12d3-a456-426614174000",  # Valid UUID format
             "email": "test@example.com",
             "is_admin": False,
             "tier": "free",

@@ -74,6 +74,7 @@ export function RecentActivity() {
       title: 'Scientific Reasoning',
       user: 'scientist_bob',
       timestamp: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(),
+      status: 'pending',
       testId: 'test-202'
     }
   ]

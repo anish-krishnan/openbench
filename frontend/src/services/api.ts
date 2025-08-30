@@ -54,7 +54,7 @@ export const testsApi = {
     apiClient.post<TestCase>('/tests', testCase),
 
   update: (id: string, updates: Partial<TestCaseCreate>) =>
-    apiClient.patch<TestCase>(`/tests/${id}`, updates),
+    apiClient.put<TestCase>(`/tests/${id}`, updates),
 
   run: (id: string, modelIds?: string[]) =>
     apiClient.post<Execution>(`/tests/${id}/run`, { model_ids: modelIds }),
