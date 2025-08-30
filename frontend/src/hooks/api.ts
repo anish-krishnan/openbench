@@ -250,7 +250,16 @@ export const useUpdateTest = () => {
     mutationFn: ({ id, updates }: { id: string; updates: Partial<TestCaseCreate> }) =>
       testsApi.update(id, updates),
     onSuccess: (data, variables) => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.tests.detail(variables.id) })
+      // Invalidate all queries related to this test
+      queryClient.invalidateQueries({ 
+        predicate: (query) => {
+          const queryKey = query.queryKey as string[]
+          return queryKey[0] === 'tests' && 
+                 queryKey[1] === 'detail' && 
+                 queryKey[2] === variables.id
+        }
+      })
+      // Also invalidate test lists
       queryClient.invalidateQueries({ queryKey: queryKeys.tests.lists() })
     },
   })
