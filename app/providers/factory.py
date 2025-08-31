@@ -10,6 +10,7 @@ from .openai_provider import OpenAIProvider
 from .anthropic_provider import AnthropicProvider
 from .google_provider import GoogleProvider
 from .together_provider import TogetherProvider
+from .mes_provider import ModelExecutionServiceProvider
 
 logger = structlog.get_logger(__name__)
 
@@ -22,6 +23,7 @@ class ProviderFactory:
         "anthropic": AnthropicProvider,
         "google": GoogleProvider,
         "together": TogetherProvider,
+        "mes": ModelExecutionServiceProvider,
     }
     
     _instances: Dict[str, BaseProvider] = {}

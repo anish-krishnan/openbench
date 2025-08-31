@@ -1,0 +1,69 @@
+{
+  "models": {
+    "llama3.1:8b": {
+      "display_name": "Llama 3.1 8B",
+      "enabled": true,
+      "preload": true,
+      "max_concurrent": 3,
+      "timeout": 30,
+      "size_gb": 4.7,
+      "min_memory_gb": 8,
+      "context_window": 8192,
+      "supports_json_mode": true,
+      "default_temperature": 0.7
+    },
+    "mistral:7b": {
+      "display_name": "Mistral 7B",
+      "enabled": true,
+      "preload": false,
+      "max_concurrent": 2,
+      "timeout": 25,
+      "size_gb": 4.1,
+      "min_memory_gb": 6,
+      "context_window": 8192,
+      "supports_json_mode": true,
+      "default_temperature": 0.7
+    },
+    "phi3:mini": {
+      "display_name": "Phi-3 Mini",
+      "enabled": true,
+      "preload": false,
+      "max_concurrent": 5,
+      "timeout": 20,
+      "size_gb": 2.3,
+      "min_memory_gb": 4,
+      "context_window": 4096,
+      "supports_json_mode": true,
+      "default_temperature": 0.7
+    },
+    "codellama:7b": {
+      "display_name": "CodeLlama 7B",
+      "enabled": true,
+      "preload": false,
+      "max_concurrent": 2,
+      "timeout": 30,
+      "size_gb": 3.8,
+      "min_memory_gb": 6,
+      "context_window": 4096,
+      "supports_json_mode": false,
+      "default_temperature": 0.1
+    },
+    "gemma:2b": {
+      "display_name": "Gemma 2B",
+      "enabled": true,
+      "preload": false,
+      "max_concurrent": 8,
+      "timeout": 15,
+      "size_gb": 1.4,
+      "min_memory_gb": 3,
+      "context_window": 8192,
+      "supports_json_mode": true,
+      "default_temperature": 0.7
+    }
+  },
+  "defaults": {
+    "temperature": 0.7,
+    "max_tokens": 1000,
+    "timeout": 30
+  }
+}
