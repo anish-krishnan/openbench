@@ -30,6 +30,8 @@ class ModelLoadResponse(BaseModel):
 
 class InferenceRequest(BaseModel):
     """Request for inference endpoint."""
+    model_config = {"protected_namespaces": ()}
+    
     model_id: str
     prompt: str
     system_prompt: Optional[str] = None

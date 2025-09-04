@@ -7,13 +7,15 @@ from contextlib import asynccontextmanager
 
 import structlog
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 
 from app.api.routes import router
 from app.core.config import settings
 from app.core.logging import setup_logging
 from app.services.model_manager import model_manager
+from app.models.api import ErrorResponse
 
 
 @asynccontextmanager
@@ -60,6 +62,32 @@ def create_app() -> FastAPI:
     
     # Include API routes
     app.include_router(router)
+    
+    # Add exception handlers
+    @app.exception_handler(HTTPException)
+    async def http_exception_handler(request, exc):
+        """Handle HTTP exceptions."""
+        return JSONResponse(
+            status_code=exc.status_code,
+            content=ErrorResponse(
+                error=exc.detail,
+                code=str(exc.status_code)
+            ).dict()
+        )
+
+    @app.exception_handler(Exception)
+    async def general_exception_handler(request, exc):
+        """Handle general exceptions."""
+        logger = structlog.get_logger()
+        logger.error("Unhandled exception", error=str(exc))
+        
+        return JSONResponse(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            content=ErrorResponse(
+                error="Internal server error",
+                detail=str(exc)
+            ).dict()
+        )
     
     return app
 

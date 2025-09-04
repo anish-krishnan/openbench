@@ -215,28 +215,4 @@ async def get_status(api_key: str = Depends(verify_api_key)):
         )
 
 
-# Error handlers
-@router.exception_handler(HTTPException)
-async def http_exception_handler(request, exc):
-    """Handle HTTP exceptions."""
-    return JSONResponse(
-        status_code=exc.status_code,
-        content=ErrorResponse(
-            error=exc.detail,
-            code=str(exc.status_code)
-        ).dict()
-    )
-
-
-@router.exception_handler(Exception)
-async def general_exception_handler(request, exc):
-    """Handle general exceptions."""
-    logger.error("Unhandled exception", error=str(exc))
-    
-    return JSONResponse(
-        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-        content=ErrorResponse(
-            error="Internal server error",
-            detail=str(exc)
-        ).dict()
-    )
+# Note: Exception handlers are added to the main FastAPI app in main.py
